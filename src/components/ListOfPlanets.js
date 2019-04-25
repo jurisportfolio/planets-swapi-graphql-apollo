@@ -54,24 +54,27 @@ class ListOfPlanetsComponent extends React.Component {
     const planetsPerPage = this.props.planetsPerPage;
 
     const rangeOfPages = Math.ceil(fullListOfPlanets.length / planetsPerPage);
+    const pageNumbersArray = Array.from(Array(rangeOfPages), (val, index) => index + 1 );
+    console.log('pageNumbersArray: ', pageNumbersArray);
+
     const lastPlanetOnPage = this.state.currentPage * planetsPerPage;
-    console.log('lastPlanetOnPage: ', lastPlanetOnPage);
     const firstPlanetOnPage = lastPlanetOnPage - planetsPerPage;
     console.log('firstPlanetOnPage: ', firstPlanetOnPage);
+    console.log('lastPlanetOnPage: ', lastPlanetOnPage);
 
     const listOfPlanetsOnCurrentPage = fullListOfPlanets.slice(firstPlanetOnPage, lastPlanetOnPage);
     
     return(
-      <>
+      <React.Fragment>
         <StyledListOfPlanets>
           {listOfPlanetsOnCurrentPage.map((planet) => 
             <PlanetOnListComponent key={planet.id} name={planet.name} />)
           }
           
         </StyledListOfPlanets>
-        <PaginationPageNumbersComponent changePage={this.handelChangePage} pageNumbers={[1, 2, 3]}/>
+        <PaginationPageNumbersComponent changePage={this.handelChangePage} pageNumbers={pageNumbersArray}/>
         
-      </>
+      </React.Fragment>
     );
   }
 };
