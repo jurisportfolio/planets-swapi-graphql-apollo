@@ -6,6 +6,7 @@ import uuidv4 from "uuid/v4";
 const StyledApp = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 
@@ -18,15 +19,15 @@ function generatePlanets(listOfPlanets, amount, ) {
 
   } else { return listOfPlanets }
 }
-const automaticListOfPlanets = generatePlanets([], 20);
-console.log('automaticListOfPlanets: ', automaticListOfPlanets);
+const automaticListOfPlanets = generatePlanets([], 25);
+
 
 
 
 function App() {
   return (
     <StyledApp>
-      <ListOfPlanetsComponent listOfPlanets={automaticListOfPlanets}/>
+      <ListOfPlanetsComponent listOfPlanets={automaticListOfPlanets} planetsPerPage={10}/>
     </StyledApp>
   );
 }
