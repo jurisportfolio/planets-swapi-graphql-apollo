@@ -15,8 +15,6 @@ const StyledListOfPlanets = styled.div `
   border-radius: 5px;
   padding: 10px;
   margin: 50px 50px 10px 50px;
-
-
 `;
 
 const StyledPaginationPageNumbersComponent = styled.div `
@@ -46,7 +44,7 @@ class ListOfPlanetsComponent extends React.Component {
     currentPage: 1
   }
 
-  handelChangePage = (event) => {   
+  handleChangePage = (event) => {   
     console.log('page: ', event.target.value);
     
     this.setState({ currentPage: event.target.value});
@@ -65,7 +63,7 @@ class ListOfPlanetsComponent extends React.Component {
             <PlanetOnListComponent key={node.id} name={node.name} />)
           }
         </StyledListOfPlanets>
-        <PaginationPageNumbersComponent changePage={this.handelChangePage} pageNumbers={pageNumbersArray}/>
+        <PaginationPageNumbersComponent changePage={this.handleChangePage} pageNumbers={pageNumbersArray}/>
       </React.Fragment>
     );
   }

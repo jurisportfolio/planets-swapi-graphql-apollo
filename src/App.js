@@ -19,22 +19,22 @@ export const client = new ApolloClient({
 });
 
 const ALL_PLANETS = gql `
-{
-  allPlanets(first: 10, after: "") {
-    totalCount
-    edges {
-      node {
-        id
-        name
+  query Planets($cursor: String) {
+    allPlanets(first: 10, after: $cursor) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+        }
+        cursor
       }
-      cursor
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
     }
-    pageInfo {
-      startCursor
-      endCursor
-      hasNextPage
-    }
-  }
 }`;
 
 const StyledApp = styled.div`
@@ -44,7 +44,7 @@ const StyledApp = styled.div`
 `;
 
 class App extends React.Component {
-  state
+  // state
 
   render(){
     return (
