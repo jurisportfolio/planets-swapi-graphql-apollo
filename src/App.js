@@ -9,6 +9,12 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
+const StyledApp = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
 const httpLink = createHttpLink({
   uri: 'https://swapi.apis.guru/'
 })
@@ -20,7 +26,7 @@ export const client = new ApolloClient({
 
 const ALL_PLANETS = gql `
   query Planets($cursor: String) {
-    allPlanets(first: 10, after: $cursor) {
+    allPlanets(first: 1, after: $cursor) {
       totalCount
       edges {
         node {
@@ -37,32 +43,48 @@ const ALL_PLANETS = gql `
     }
 }`;
 
-const StyledApp = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
 
 class App extends React.Component {
-  // state
-
   render(){
     return (
       <ApolloProvider client={client}>
         <Query query={ALL_PLANETS}>
-          {({ loading, error, data }) => {
+          {({ loading, error, data, fetchMore }) => {
             if (loading) return <h1>LOADING...</h1>;
             if (error) return( console.log('ERROR: ', error) );
-            
+             
             const listOfPlanetsFormServer = data.allPlanets.edges;
 
             const totalCountOfPlanet = data.allPlanets.totalCount;
 
             const firstPlanetOnPage = data.allPlanets.pageInfo.startCursor;
 
-            const lastPlanetOnPage = data.allPlanets.pageInfo.endCursor;
+            {/* const lastPlanetOnPage = data.allPlanets.pageInfo.endCursor; */}
 
+            const onLoad = () =>
+            
+              fetchMore({
+                variables: {
+                  cursor: data.allPlanets.pageInfo.endCursor
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                  const newEdges = fetchMoreResult.allPlanets.edges;
+                  console.log('newEdges: ', newEdges);
+                  const pageInfo = fetchMoreResult.allPlanets.pageInfo;
+                  console.log('pageInfo: ', pageInfo);
 
+                  return newEdges.length
+                    ? {
+                        allPlanets: {
+                          __typename: previousResult.allPlanets.__typename,
+                          edges: [...previousResult.allPlanets.edges, ...newEdges],
+                          pageInfo
+                        }
+                      }
+                    : previousResult;
+                }
+              })
+            {/* console.log('onLoad: ', onLoad()); */}
 
             return(
               <StyledApp>
