@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import PlanetOnListComponent from './PlanetOnList';
+// import { client } from '../App';
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const StyledListOfPlanets = styled.div `
   display: flex;
@@ -50,30 +53,19 @@ class ListOfPlanetsComponent extends React.Component {
   }
 
   render(){
-    const fullListOfPlanets = this.props.listOfPlanets;
     const planetsPerPage = this.props.planetsPerPage;
+    const listOfPlanetsFormServer = this.props.listOfPlanets;
+    const rangeOfPages = Math.ceil(this.props.totalCountOfPlanet / planetsPerPage);
 
-    const rangeOfPages = Math.ceil(fullListOfPlanets.length / planetsPerPage);
     const pageNumbersArray = Array.from(Array(rangeOfPages), (val, index) => index + 1 );
-    console.log('pageNumbersArray: ', pageNumbersArray);
-
-    const lastPlanetOnPage = this.state.currentPage * planetsPerPage;
-    const firstPlanetOnPage = lastPlanetOnPage - planetsPerPage;
-    console.log('firstPlanetOnPage: ', firstPlanetOnPage);
-    console.log('lastPlanetOnPage: ', lastPlanetOnPage);
-
-    const listOfPlanetsOnCurrentPage = fullListOfPlanets.slice(firstPlanetOnPage, lastPlanetOnPage);
-    
     return(
       <React.Fragment>
         <StyledListOfPlanets>
-          {listOfPlanetsOnCurrentPage.map((planet) => 
-            <PlanetOnListComponent key={planet.id} name={planet.name} />)
+          {listOfPlanetsFormServer.map(({node}) => 
+            <PlanetOnListComponent key={node.id} name={node.name} />)
           }
-          
         </StyledListOfPlanets>
         <PaginationPageNumbersComponent changePage={this.handelChangePage} pageNumbers={pageNumbersArray}/>
-        
       </React.Fragment>
     );
   }

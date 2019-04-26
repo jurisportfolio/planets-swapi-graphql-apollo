@@ -14,7 +14,7 @@ const StyledPlanetOnList = styled.div `
 const PlanetOnListComponent = ({name}) => {
   return(
     <StyledPlanetOnList>
-      <h2>{name}</h2>
+      <h4>{name}</h4>
     </StyledPlanetOnList>
   );
 };
