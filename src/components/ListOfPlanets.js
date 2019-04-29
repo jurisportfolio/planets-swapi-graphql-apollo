@@ -1,11 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import PlanetOnListComponent from './PlanetOnList';
+import React from "react";
+import styled from "styled-components";
+import PlanetOnListComponent from "./PlanetOnList";
+import ChangePageComponent from "./PageChangeButtons";
 // import { client } from '../App';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
-const StyledListOfPlanets = styled.div `
+const StyledListOfPlanets = styled.div`
   display: flex;
   justify-content: space-around;
   align-content: flex-start;
@@ -17,56 +18,116 @@ const StyledListOfPlanets = styled.div `
   margin: 50px 50px 10px 50px;
 `;
 
-const StyledPaginationPageNumbersComponent = styled.div `
-  display: flex;
-  justify-content: center;
-  margin-bottom: 50px;
+// class ListOfPlanetsComponent extends React.Component {
+
+//   handleOnClickBack = event => {
+//     console.log("page: ", event.target);
+//   };
+
+//   handleOnClickNext = event => {
+//     console.log("page: ", event.target);
+//   };
+
+//   render() {
+
+//     return (
+//       <React.Fragment>
+//         <StyledListOfPlanets>
+//           {listOfPlanetsFormServer.map(({ node }) => (
+//             <PlanetOnListComponent key={node.id} name={node.name} />
+//           ))}
+//         </StyledListOfPlanets>
+//         <ChangePageComponent
+//           handleOnClickBack={this.handleOnClickBack}
+//           handleOnClickNext={this.handleOnClickNext}
+//         />
+//       </React.Fragment>
+//     );
+//   }
+// }
+
+const ALL_PLANETS = gql`
+  query Planets($cursor: String) {
+    allPlanets(first: 3, after: $cursor) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+        }
+        cursor
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
+    }
+  }
 `;
-
-const PageNumberComponent = styled.button `
-`;
-
-const PaginationPageNumbersComponent = ({ changePage, pageNumbers }) => {
-  return(
-
-  <StyledPaginationPageNumbersComponent>
-    {pageNumbers.map((number) => 
-      <PageNumberComponent onClick={changePage} value={number} key={number} pageNumber={number}>
-        {number}
-      </PageNumberComponent>)}
-  </StyledPaginationPageNumbersComponent>
-
-  )
-};
 
 class ListOfPlanetsComponent extends React.Component {
-  state = {
-    currentPage: 1
-  }
+  handleOnClickBack = event => {
+    console.log("page: ", event.target);
+  };
 
-  handleChangePage = (event) => {   
-    console.log('page: ', event.target.value);
-    
-    this.setState({ currentPage: event.target.value});
-  }
+  handleOnClickNext = event => {
+    console.log("page: ", event.target);
+  };
 
-  render(){
-    const planetsPerPage = this.props.planetsPerPage;
-    const listOfPlanetsFormServer = this.props.listOfPlanets;
-    const rangeOfPages = Math.ceil(this.props.totalCountOfPlanet / planetsPerPage);
+  render() {
+    return (
+      <Query query={ALL_PLANETS}>
+        {({ loading, error, data, fetchMore }) => {
+          if (loading) return <h1>LOADING...</h1>;
+          if (error) return console.log("ERROR: ", error);
+          const listOfPlanetsFormServer = data.allPlanets.edges;
 
-    const pageNumbersArray = Array.from(Array(rangeOfPages), (val, index) => index + 1 );
-    return(
-      <React.Fragment>
-        <StyledListOfPlanets>
-          {listOfPlanetsFormServer.map(({node}) => 
-            <PlanetOnListComponent key={node.id} name={node.name} />)
+          {
+            /* const onLoad = () =>
+            fetchMore({
+              variables: {
+                cursor: data.allPlanets.pageInfo.endCursor
+              },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                const newEdges = fetchMoreResult.allPlanets.edges;
+                console.log("newEdges: ", newEdges);
+                const pageInfo = fetchMoreResult.allPlanets.pageInfo;
+                console.log("pageInfo: ", pageInfo);
+
+                return newEdges.length
+                  ? {
+                      allPlanets: {
+                        __typename: previousResult.allPlanets.__typename,
+                        edges: [
+                          ...previousResult.allPlanets.edges,
+                          ...newEdges
+                        ],
+                        pageInfo
+                      }
+                    }
+                  : previousResult;
+              }
+            }); */
           }
-        </StyledListOfPlanets>
-        <PaginationPageNumbersComponent changePage={this.handleChangePage} pageNumbers={pageNumbersArray}/>
-      </React.Fragment>
+
+          return (
+            <React.Fragment>
+              <StyledListOfPlanets>
+                {listOfPlanetsFormServer.map(({ node }) => (
+                  <PlanetOnListComponent key={node.id} name={node.name} />
+                ))}
+              </StyledListOfPlanets>
+              <ChangePageComponent
+                handleOnClickBack={this.handleOnClickBack}
+                handleOnClickNext={this.handleOnClickNext}
+              />
+            </React.Fragment>
+          );
+        }}
+      </Query>
     );
   }
-};
+}
 
 export default ListOfPlanetsComponent;
