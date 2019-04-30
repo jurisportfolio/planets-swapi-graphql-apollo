@@ -6,8 +6,8 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
+// import gql from "graphql-tag";
+// import { Query } from "react-apollo";
 
 const StyledApp = styled.div`
   display: flex;
@@ -48,51 +48,6 @@ class App extends React.Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        {/* <Query query={ALL_PLANETS}>
-          {({ loading, error, data, fetchMore }) => {
-            if (loading) return <h1>LOADING...</h1>;
-            if (error) return console.log("ERROR: ", error);
-
-            const listOfPlanetsFormServer = data.allPlanets.edges;
-
-            const totalCountOfPlanet = data.allPlanets.totalCount;
-
-            const firstPlanetOnPage = data.allPlanets.pageInfo.startCursor;
-
-
-
-            const onLoad = () =>
-              fetchMore({
-                variables: {
-                  cursor: data.allPlanets.pageInfo.endCursor
-                },
-                updateQuery: (previousResult, { fetchMoreResult }) => {
-                  const newEdges = fetchMoreResult.allPlanets.edges;
-                  console.log("newEdges: ", newEdges);
-                  const pageInfo = fetchMoreResult.allPlanets.pageInfo;
-                  console.log("pageInfo: ", pageInfo);
-
-                  return newEdges.length
-                    ? {
-                        allPlanets: {
-                          __typename: previousResult.allPlanets.__typename,
-                          edges: [
-                            ...previousResult.allPlanets.edges,
-                            ...newEdges
-                          ],
-                          pageInfo
-                        }
-                      }
-                    : previousResult;
-                }
-              });
-            {
-
-            }
-
-            return null;
-          }}
-        </Query> */}
         <StyledApp>
           <ListOfPlanetsComponent />
         </StyledApp>
