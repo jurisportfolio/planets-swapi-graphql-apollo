@@ -11,7 +11,7 @@ const StyledListOfPlanets = styled.div`
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px,  1fr));
-
+  ${'' /* grid-template-row: repeat(auto-fit, minmax(800px,  4fr)); */}
   border: solid 1px black;
   border-radius: 5px;
   padding: 10px;
@@ -74,6 +74,7 @@ class ListOfPlanetsComponent extends React.Component {
             <PlanetOnListComponent
               key={node.id}
               aboutPlanet={node}
+              
             />
           ))}
         </StyledListOfPlanets>
