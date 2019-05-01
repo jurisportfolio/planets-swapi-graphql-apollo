@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import PlanetOnListComponent from "./PlanetOnList";
 import ChangePageComponent from "./PageChangeButtons";
-// import { client } from '../App';
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 
@@ -20,46 +18,48 @@ const StyledListOfPlanets = styled.div`
 `;
 
 class ListOfPlanetsComponent extends React.Component {
-  handleOnClickBack = event => {
-    console.log("page: ", event.target);
-    // this.props.data.fetchMore({
-    //   variables: {
-    //     afterCursor: "",
-    //     beforeCursor: this.props.data.allPlanets.pageInfo.startCursor
-    //   },
-    //   updateQuery: (previousResult, { fetchMoreResult }) => {
-    //     const newEdges = fetchMoreResult.allPlanets.edges;
-    //     console.log("newEdges: ", newEdges);
-    //     const pageInfo = fetchMoreResult.allPlanets.pageInfo;
-    //     console.log("pageInfo: ", pageInfo);
-    //     console.log("newEdges.length: ", newEdges.length);
-    //     return newEdges.length
-    //       ? {
-    //           allPlanets: {
-    //             __typename: previousResult.allPlanets.__typename,
-    //             edges: [...newEdges],
-    //             pageInfo
-    //           }
-    //         }
-    //       : previousResult;
-    //   }
-    // });
-  };
 
-  handleOnClickNext = event => {
+
+
+
+
+
+  handleOnClickBack = () => {
     this.props.data.fetchMore({
       variables: {
-        cursor: this.props.data.allPlanets.pageInfo.endCursor
+        firstFromList: null,
+        lastFromList: 10,
+        cursorAfter: null,
+        cursorBefore: this.props.data.allPlanets.pageInfo.startCursor
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.allPlanets.edges;
         const pageInfo = fetchMoreResult.allPlanets.pageInfo;
-        if (fetchMoreResult.loading)
-          return console.log(
-            "fetchMoreResult.loading: ",
-            fetchMoreResult.loading
-          );
+        return newEdges.length
+          ? {
+              allPlanets: {
+                __typename: previousResult.allPlanets.__typename,
+                edges: [...newEdges],
+                pageInfo
+              }
+            }
+          : previousResult;
+      }
+    });
+  };
 
+  handleOnClickNext = () => {
+    this.props.data.fetchMore({
+      variables: {
+        firstFromList: 10,
+        lastFromList: null,
+
+        cursorAfter: this.props.data.allPlanets.pageInfo.endCursor,
+        cursorBefore: null
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const newEdges = fetchMoreResult.allPlanets.edges;
+        const pageInfo = fetchMoreResult.allPlanets.pageInfo;
         return newEdges.length
           ? {
               allPlanets: {
@@ -79,20 +79,28 @@ class ListOfPlanetsComponent extends React.Component {
     if (loading) return <h1>LOADING...</h1>;
     if (error) return console.log("ERROR: ", this.props.data.error);
     const listOfPlanetsFormServer = allPlanets.edges;
+    console.log('allPlanets.edges: ', allPlanets.edges[0]);
+    const isPreviousPage = allPlanets.pageInfo.hasPreviousPage;
+    console.log('isPreviousPage: ', isPreviousPage);
     const isNextPage = allPlanets.pageInfo.hasNextPage;
     console.log("isNextPage: ", isNextPage);
     return (
       <React.Fragment>
         <StyledListOfPlanets>
           {listOfPlanetsFormServer.map(({ node }) => (
-            <PlanetOnListComponent key={node.id} name={node.name} />
+            console.log('node: ', node),
+            <PlanetOnListComponent
+              key={node.id}
+              aboutPlanet={node}
+              
+            />
           ))}
         </StyledListOfPlanets>
 
         <ChangePageComponent
           handleOnClickBack={this.handleOnClickBack}
           handleOnClickNext={this.handleOnClickNext}
-          isEnabled={{ isBackEnabled: null, isNextEnabled: isNextPage }}
+          isEnabled={{ isBackEnabled: true, isNextEnabled: true }}
         />
       </React.Fragment>
     );
@@ -100,12 +108,25 @@ class ListOfPlanetsComponent extends React.Component {
 }
 
 const ALL_PLANETS = gql`
-  query Planets($cursor: String) {
-    allPlanets(first: 9, after: $cursor) {
+  query Planets(
+    $firstFromList: Int,
+    $lastFromList: Int,
+    $cursorAfter: String,
+    $cursorBefore: String,
+  ) {
+    allPlanets(
+      first: $firstFromList,
+      last: $lastFromList,
+      after: $cursorAfter,
+      before: $cursorBefore,
+    ) {
       edges {
         node {
           id
           name
+          diameter
+          population
+          surfaceWater
         }
         cursor
       }
@@ -119,4 +140,13 @@ const ALL_PLANETS = gql`
   }
 `;
 
-export default graphql(ALL_PLANETS)(ListOfPlanetsComponent);
+export default graphql(ALL_PLANETS, {
+  options: () => ({
+    variables: {
+      firstFromList: 10,
+      lastFromList: null,
+      cursorAfter: null,
+      cursorBefore: null
+    }
+  })
+})(ListOfPlanetsComponent);

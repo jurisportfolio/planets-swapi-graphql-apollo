@@ -16,18 +16,19 @@ const StyledPageChangeButton = styled.button`
 const ChangePageComponent = ({
   handleOnClickNext,
   handleOnClickBack,
-  isEnabled
+  isEnabled: {isNextEnabled, isBackEnabled}
 }) => {
-  console.log("isNextEnabled: ", isEnabled.isNextEnabled);
+
   return (
     <StyledChangePageComponent>
-      <StyledPageChangeButton onClick={handleOnClickBack}>
+      <StyledPageChangeButton onClick={handleOnClickBack}
+      disabled={!isBackEnabled}>
         Previous Page
       </StyledPageChangeButton>
 
       <StyledPageChangeButton
         onClick={handleOnClickNext}
-        disabled={!isEnabled.isNextEnabled}
+        disabled={!isNextEnabled}
       >
         Next Page
       </StyledPageChangeButton>
