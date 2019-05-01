@@ -5,20 +5,13 @@ import ChangePageComponent from "./PageChangeButtons";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 
-const numberPlanetsOnPage = 8;
+const numberPlanetsOnPage = 10;
 
 const StyledListOfPlanets = styled.div`
+
   display: grid;
-  grid-template-columns: 250px 250px 250px 250px 250px;
-  grid-template-rows: 210px 210px;
+  grid-template-columns: repeat(auto-fit, minmax(220px,  1fr));
 
-
-
-  ${'' /* display: flex;
-  justify-content: flex-start;
-  align-content: flex-start;
-  flex-wrap: wrap;
-  align-items: stretch; */}
   border: solid 1px black;
   border-radius: 5px;
   padding: 10px;
