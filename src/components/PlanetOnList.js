@@ -6,7 +6,10 @@ import { withApollo, Query } from 'react-apollo';
 const StyledPlanetOnList = styled.div`
 
   justify-self: stretch;
-  grid-column: span ${(props) => props.boolVar ? 2 : 1};
+
+  @media (min-width: 461px) {
+    grid-column: span ${(props) => props.boolVar ? 2 : 1};
+  }
   grid-row: span ${(props) => props.boolVar ? 2 : 1};
 
   display: flex;
@@ -15,13 +18,14 @@ const StyledPlanetOnList = styled.div`
   border: solid 1px black;
   border-radius: 5px;
   padding: 10px;
-  margin: 20px;
+  margin: 5px;
   cursor: default;
 
-  h6 {
+  h5 {
     margin: 5px;
+    font-weight: normal;
   };
-  h4 {
+  h3 {
     margin-top: 5px;
     text-align: center;
   }
@@ -44,22 +48,34 @@ class PlanetOnListComponent extends React.Component {
     console.log('id: ', id);
     return (
       <StyledPlanetOnList onClick={this.handleOnClick} boolVar={this.state.boolVar}>
-        {name ? <div><h6>Name</h6><h4> {name}</h4></div> : null}
-        {<h6>Diameter: {diameter ? `${diameter} km` : "No information"}</h6>}
-        {<h6>Diameter: {population ? `${population} persons` : "No information"}</h6>}
-        {<h6>Water surface: {surfaceWater ? `${surfaceWater}%` : "No information"}</h6>}
+        {name ? <div><h5>Planet</h5><h3> {name}</h3></div> : null}
+        {<h5>Diameter: {diameter ? `${diameter} km` : "No information"}</h5>}
+        {<h5>Population: {population ? `${population} persons` : "No information"}</h5>}
+        {<h5>Water surface: {surfaceWater ? `${surfaceWater}%` : "No information"}</h5>}
         {this.state.boolVar ? 
           <Query query={PLANET_ALL_INFO} variables={{planetID: id}}>
             {
               ({ loading, error, data }) => {
                 console.log('loading, error, data: ', loading, error, data);
-                if (loading) return <h6>LOADING...</h6>;
-                if (error) return <h6>NO INFORMATION</h6>;
-                const { gravity } = data.planet;
+                if (loading) return <h5>LOADING...</h5>;
+                if (error) return <h5>NO INFORMATION</h5>;
+                const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = data.planet;
                 return(
                   <div>
-                    {<h6>Gravity: {gravity ? `${gravity}` : "No information"}</h6>}
-                    <h6>MORE INFO...</h6>
+                    {<h5>Gravity: {gravity ? `${gravity}` : "No information"}</h5>}
+                    {<h5>Rotation Period: {rotationPeriod ? `${rotationPeriod}` : "No information"}</h5>}
+                    {<h5>Orbital Period: {orbitalPeriod ? `${orbitalPeriod}` : "No information"}</h5>}
+                    {<h5>Climates: {climates ? `${climates.map((climate)=>` ${climate}`)}` : "No information"}</h5>}
+                    {<h5>Terrains: {terrains ? `${terrains.map((terrain)=>` ${terrain}`)}` : "No information"}</h5>}
+                    {filmConnection.films.length > 0 ?
+                      <div>
+                        <hr/><h5>Film where you could see this planet:</h5>
+                        <ul>{filmConnection.films.map((film)=><li key={film.id}><h5>{film.title}</h5></li>)}</ul>
+                      </div> : null}
+                    {residentConnection.residents.length > 0 ? <div>
+                      <hr/><h5>Persons which connect to this planet:</h5>
+                      <ul>{residentConnection.residents.map((resident)=><li key={resident.id}><h5>{resident.name}</h5></li>)}</ul>
+                    </div> : null}  
                   </div>
                 )
               }
@@ -89,11 +105,13 @@ query Planet(
     surfaceWater
     filmConnection {
       films {
+        id
         title
       }
     }
     residentConnection {
       residents {
+        id
         name
       }
     }
