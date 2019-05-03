@@ -3,7 +3,7 @@
   "homepage": "http://",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://jurisportfolio.github.com/planets-swapi-graphql-apollo",
+  "homepage": "https://jurisportfolio.github.io/planets-swapi-graphql-apollo/",
   "dependencies": {
     "apollo-boost": "^0.3.1",
     "apollo-client": "^2.5.1",
@@ -18,6 +18,8 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
+    
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
