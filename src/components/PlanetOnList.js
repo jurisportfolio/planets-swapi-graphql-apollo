@@ -69,7 +69,7 @@ class PlanetOnListComponent extends React.Component {
                     {<h5>Terrains: {terrains ? `${terrains.map((terrain)=>` ${terrain}`)}` : "No information"}</h5>}
                     {filmConnection.films.length > 0 ?
                       <div>
-                        <hr/><h5>Film where you could see this planet:</h5>
+                        <hr/><h5>Films where you could see this planet:</h5>
                         <ul>{filmConnection.films.map((film)=><li key={film.id}><h5>{film.title}</h5></li>)}</ul>
                       </div> : null}
                     {residentConnection.residents.length > 0 ? <div>
