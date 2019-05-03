@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/planets-swapi-graphql-apollo/static/css/main.795991f2.chunk.css",
+    "main.js": "/planets-swapi-graphql-apollo/static/js/main.d6a4012c.chunk.js",
+    "main.js.map": "/planets-swapi-graphql-apollo/static/js/main.d6a4012c.chunk.js.map",
+    "runtime~main.js": "/planets-swapi-graphql-apollo/static/js/runtime~main.929029bd.js",
+    "runtime~main.js.map": "/planets-swapi-graphql-apollo/static/js/runtime~main.929029bd.js.map",
+    "static/js/2.62383f9c.chunk.js": "/planets-swapi-graphql-apollo/static/js/2.62383f9c.chunk.js",
+    "static/js/2.62383f9c.chunk.js.map": "/planets-swapi-graphql-apollo/static/js/2.62383f9c.chunk.js.map",
+    "index.html": "/planets-swapi-graphql-apollo/index.html",
+    "precache-manifest.9262ea37ead2b2d2da9e2063e9237eaa.js": "/planets-swapi-graphql-apollo/precache-manifest.9262ea37ead2b2d2da9e2063e9237eaa.js",
+    "service-worker.js": "/planets-swapi-graphql-apollo/service-worker.js",
+    "static/css/main.795991f2.chunk.css.map": "/planets-swapi-graphql-apollo/static/css/main.795991f2.chunk.css.map"
+  }
+}
