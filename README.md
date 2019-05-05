@@ -1,68 +1,29 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Application have been published at [planets-swapi-graphql-apollo](https://jurisportfolio.github.io/planets-swapi-graphql-apollo/)
 
-## Available Scripts
+### 1. Task
 
-In the project directory, you can run:
+Aplication based on GraphQL API from [https://graphql.org/swapi-graphql/](https://graphql.org/swapi-graphql/)
 
-### `npm start`
+User should see the list of planets with simple information about them.
+List should contain pagination (there are 10 planets on page by default) with “back” and ”next” buttons under it.
+On click user get all available information about planet together with list of films, where the planet was reminded and list of Star Wars characters which connect to this planet.
+For styling use styled-componets; Free choose yourself the way to access graphql data.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 1. Libraries and technologies
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Application was built by using
+ReactJS for building UI components;
+Create React App to manage the project;
+Apollo Client to fetch data from server;
+graphql as a query language;
+styled-components to style react components;
+CSS grid to create responsive web design layout;
+gh-pages to deploy the app.
 
-### `npm test`
+### 1. Description of the solution
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Project was started and manadge by Create React App tools. UI components I’m building by ReactJS. To make queries and fetch data from server [(https://swapi.apis.guru/)](https://swapi.apis.guru/) I’m using Apollo Client. GraphQL API of this database allows to build cursor pagination, which is used to partition whole list of planet on couple pages by 10 elements. User able to change page by clicking on “Previous Page” or “Next Page” buttons. Every time after page changes, application fetching data for next 10 planets after or before actual list.
 
-### `npm run build`
+### 1. Development directions
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### 1. Restrictions and bags
