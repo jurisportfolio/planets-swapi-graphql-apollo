@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
 
 importScripts(
-  "/planets-swapi-graphql-apollo/precache-manifest.9262ea37ead2b2d2da9e2063e9237eaa.js"
+  "/planets-swapi-graphql-apollo/precache-manifest.32407b3f69cc7416f696a6952f6d64f1.js"
 );
 
 self.addEventListener('message', (event) => {
