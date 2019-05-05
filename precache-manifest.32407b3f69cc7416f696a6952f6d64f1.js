@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "55a55aef5d574e3fffa4d6a46f86038b",
+    "revision": "b6a8a0aa0c31985e6aaa9a12f3b2701c",
     "url": "/planets-swapi-graphql-apollo/index.html"
   },
   {
-    "revision": "ce421d87a54134f4307b",
+    "revision": "91f91f2fa6adafb6b295",
     "url": "/planets-swapi-graphql-apollo/static/css/main.795991f2.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/planets-swapi-graphql-apollo/static/js/2.62383f9c.chunk.js"
   },
   {
-    "revision": "ce421d87a54134f4307b",
-    "url": "/planets-swapi-graphql-apollo/static/js/main.d6a4012c.chunk.js"
+    "revision": "91f91f2fa6adafb6b295",
+    "url": "/planets-swapi-graphql-apollo/static/js/main.cae4c424.chunk.js"
   },
   {
     "revision": "97472796819d7cafb1b6",
