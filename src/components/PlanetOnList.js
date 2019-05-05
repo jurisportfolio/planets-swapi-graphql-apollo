@@ -8,9 +8,9 @@ const StyledPlanetOnList = styled.div`
   justify-self: stretch;
 
   @media (min-width: 461px) {
-    grid-column: span ${(props) => props.boolVar ? 2 : 1};
+    grid-column: span ${(props) => props.isPlanetFullInfoOpen ? 2 : 1};
   }
-  grid-row: span ${(props) => props.boolVar ? 2 : 1};
+  grid-row: span ${(props) => props.isPlanetFullInfoOpen ? 2 : 1};
 
   display: flex;
   flex-direction: column;
@@ -33,26 +33,25 @@ const StyledPlanetOnList = styled.div`
 
 class PlanetOnListComponent extends React.Component {
   state = {
-    boolVar: false
+    isPlanetFullInfoOpen: false
   }
 
 
 
   handleOnClick = () => {
-    console.log("CLICK!!!");
-    this.setState({boolVar: !this.state.boolVar});
+    this.setState({isPlanetFullInfoOpen: !this.state.isPlanetFullInfoOpen});
   }
 
   render() {
     const {id, name, diameter, population, surfaceWater } = this.props.aboutPlanet;
     console.log('id: ', id);
     return (
-      <StyledPlanetOnList onClick={this.handleOnClick} boolVar={this.state.boolVar}>
+      <StyledPlanetOnList onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
         {name ? <div><h5>Planet</h5><h3> {name}</h3></div> : null}
         {<h5>Diameter: {diameter ? `${diameter} km` : "No information"}</h5>}
         {<h5>Population: {population ? `${population} persons` : "No information"}</h5>}
         {<h5>Water surface: {surfaceWater ? `${surfaceWater}%` : "No information"}</h5>}
-        {this.state.boolVar ? 
+        {this.state.isPlanetFullInfoOpen ? 
           <Query query={PLANET_ALL_INFO} variables={{planetID: id}}>
             {
               ({ loading, error, data }) => {
