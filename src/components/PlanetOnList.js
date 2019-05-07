@@ -36,24 +36,31 @@ class PlanetOnListComponent extends React.Component {
     isPlanetFullInfoOpen: false
   }
 
-  displayLineOfPlanetInfo = () => {
-    return (
-      <h5></h5>
-    )
-  }
-
   handleOnClick = () => {
     this.setState({ isPlanetFullInfoOpen: !this.state.isPlanetFullInfoOpen });
+  }
+
+  somePlanetInfo = (info, unit = "", elseInfo = "No information") => {
+    let returnInfo = "";
+    if (info) {
+      returnInfo = ` ${info}${unit ? ` ${unit}` : ""}`;
+    } else {
+      returnInfo = ` ${elseInfo}`
+    };
+    return returnInfo;
   }
 
   render() {
     const { id, name, diameter, population, surfaceWater } = this.props.aboutPlanet;
     return (
       <StyledPlanetOnList onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
-        {name ? <div><h5>Planet</h5><h3> {name}</h3></div> : null}
-        {<h5>Diameter: {diameter ? `${diameter} km` : "No information"}</h5>}
-        {<h5>Population: {population ? `${population} persons` : "No information"}</h5>}
-        {<h5>Water surface: {surfaceWater ? `${surfaceWater}%` : "No information"}</h5>}
+        <div>
+          <h5>Planet</h5>
+          <h3>{this.somePlanetInfo(name, null, "No name")}</h3>
+        </div>
+        <h5>Diameter:{this.somePlanetInfo(diameter, "km")}</h5>
+        <h5>Population:{this.somePlanetInfo(population, "persons")}</h5>
+        <h5>Water surface: {this.somePlanetInfo(surfaceWater, "%")}</h5>
         {this.state.isPlanetFullInfoOpen ?
           <Query query={PLANET_ALL_INFO} variables={{ planetID: id }}>
             {
@@ -63,20 +70,21 @@ class PlanetOnListComponent extends React.Component {
                 const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = data.planet;
                 return (
                   <div>
-                    {<h5>Gravity: {gravity ? `${gravity}` : "No information"}</h5>}
-                    {<h5>Rotation Period: {rotationPeriod ? `${rotationPeriod}` : "No information"}</h5>}
-                    {<h5>Orbital Period: {orbitalPeriod ? `${orbitalPeriod}` : "No information"}</h5>}
-                    {<h5>Climates: {climates ? `${climates.map((climate) => ` ${climate}`)}` : "No information"}</h5>}
-                    {<h5>Terrains: {terrains ? `${terrains.map((terrain) => ` ${terrain}`)}` : "No information"}</h5>}
+                    <h5>Gravity:{this.somePlanetInfo(gravity)}</h5>
+                    <h5>Rotation Period:{this.somePlanetInfo(rotationPeriod)}</h5>
+                    <h5>Orbital Period:{this.somePlanetInfo(orbitalPeriod)}</h5>
+                    <h5>Climates:{this.somePlanetInfo(climates.map((climate) => ` ${climate}`))}</h5>
+                    <h5>Terrains: {this.somePlanetInfo(terrains.map((terrain) => ` ${terrain}`))}</h5>
                     {filmConnection.films.length > 0 ?
                       <div>
                         <hr /><h5>Films where you could see this planet:</h5>
                         <ul>{filmConnection.films.map((film) => <li key={film.id}><h5>{film.title}</h5></li>)}</ul>
                       </div> : null}
-                    {residentConnection.residents.length > 0 ? <div>
-                      <hr /><h5>Persons which connect to this planet:</h5>
-                      <ul>{residentConnection.residents.map((resident) => <li key={resident.id}><h5>{resident.name}</h5></li>)}</ul>
-                    </div> : null}
+                    {residentConnection.residents.length > 0 ?
+                      <div>
+                        <hr /><h5>Persons which connect to this planet:</h5>
+                        <ul>{residentConnection.residents.map((resident) => <li key={resident.id}><h5>{resident.name}</h5></li>)}</ul>
+                      </div> : null}
                   </div>
                 )
               }
