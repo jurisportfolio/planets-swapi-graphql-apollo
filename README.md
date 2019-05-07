@@ -22,6 +22,8 @@ gh-pages to deploy the app.
 
 ### 1. Description of the solution
 
+Project was started and manage by Create React App tools. UI components I’m building by ReactJS. To make queries and fetch data from server (https://swapi.apis.guru/) I’m using Apollo Client. GraphQL API of this database allows to build cursor pagination, which is used to partition whole list of planet on couple pages by 10 elements. User able to change page by clicking on “Previous Page” or “Next Page” buttons. Every time after page changes, application fetching data for next 10 planets after or before actual list.
+
 ### 1. Development directions
 
 ### 1. Restrictions and bags
