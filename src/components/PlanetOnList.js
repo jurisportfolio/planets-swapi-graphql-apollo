@@ -40,14 +40,8 @@ class PlanetOnListComponent extends React.Component {
     this.setState({ isPlanetFullInfoOpen: !this.state.isPlanetFullInfoOpen });
   }
 
-  somePlanetInfo = (info, unit = "", elseInfo = "No information") => {
-    let returnInfo = "";
-    if (info) {
-      returnInfo = ` ${info}${unit ? ` ${unit}` : ""}`;
-    } else {
-      returnInfo = ` ${elseInfo}`
-    };
-    return returnInfo;
+  somePlanetInfo = (info = " No information", unit = "") => {
+    return ` ${info} ${unit}`.trim()
   }
 
   render() {
@@ -56,10 +50,10 @@ class PlanetOnListComponent extends React.Component {
       <StyledPlanetOnList onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
         <div>
           <h5>Planet</h5>
-          <h3>{this.somePlanetInfo(name, null, "No name")}</h3>
+          <h3>{this.somePlanetInfo(name)}</h3>
         </div>
-        <h5>Diameter:{this.somePlanetInfo(diameter, "km")}</h5>
-        <h5>Population:{this.somePlanetInfo(population, "persons")}</h5>
+        <h5>Diameter: {this.somePlanetInfo(diameter, "km")}</h5>
+        <h5>Population: {this.somePlanetInfo(population, "persons")}</h5>
         <h5>Water surface: {this.somePlanetInfo(surfaceWater, "%")}</h5>
         {this.state.isPlanetFullInfoOpen ?
           <Query query={PLANET_ALL_INFO} variables={{ planetID: id }}>
@@ -70,10 +64,10 @@ class PlanetOnListComponent extends React.Component {
                 const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = data.planet;
                 return (
                   <div>
-                    <h5>Gravity:{this.somePlanetInfo(gravity)}</h5>
-                    <h5>Rotation Period:{this.somePlanetInfo(rotationPeriod)}</h5>
-                    <h5>Orbital Period:{this.somePlanetInfo(orbitalPeriod)}</h5>
-                    <h5>Climates:{this.somePlanetInfo(climates.map((climate) => ` ${climate}`))}</h5>
+                    <h5>Gravity: {this.somePlanetInfo(gravity)}</h5>
+                    <h5>Rotation Period: {this.somePlanetInfo(rotationPeriod)}</h5>
+                    <h5>Orbital Period: {this.somePlanetInfo(orbitalPeriod)}</h5>
+                    <h5>Climates: {this.somePlanetInfo(climates.map((climate) => ` ${climate}`))}</h5>
                     <h5>Terrains: {this.somePlanetInfo(terrains.map((terrain) => ` ${terrain}`))}</h5>
                     {filmConnection.films.length > 0 ?
                       <div>
