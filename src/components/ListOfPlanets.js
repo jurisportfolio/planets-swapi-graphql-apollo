@@ -62,8 +62,8 @@ class ListOfPlanetsComponent extends React.Component {
   render() {
     let { loading, error } = this.props.data;
     const { allPlanets } = this.props.data;
-    console.log('allPlanets: ', allPlanets);
-    console.log('this.props.data: ', this.props.data);
+    // console.log('allPlanets: ', allPlanets);
+    // console.log('this.props.data: ', this.props.data);
     if (loading) return <h1 className="loading">LOADING PLANETS...</h1>;
     if (error) return console.log("ERROR: ", this.props.data.error);
     const listOfPlanetsFormServer = allPlanets.edges;

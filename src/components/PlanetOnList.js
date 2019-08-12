@@ -3,32 +3,37 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { withApollo, Query } from 'react-apollo';
 
+const PlanetDetailsViewComponent = ({ planetDetails }) => {
+  const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = planetDetails;
+  return (
+    <div>
+      <h5>Gravity: {somePlanetInfo(gravity)}</h5>
+      <h5>Rotation Period: {somePlanetInfo(rotationPeriod)}</h5>
+      <h5>Orbital Period: {somePlanetInfo(orbitalPeriod)}</h5>
+      <h5>Climates: {somePlanetInfo(climates.map((climate) => ` ${climate}`))}</h5>
+      <h5>Terrains: {somePlanetInfo(terrains.map((terrain) => ` ${terrain}`))}</h5>
+      {filmConnection.films.length > 0 ?
+        <div>
+          <hr /><h5>Films where you could see this planet:</h5>
+          <ul>{filmConnection.films.map((film) => <li key={film.id}><h5>{film.title}</h5></li>)}</ul>
+        </div> : null}
+      {residentConnection.residents.length > 0 ?
+        <div>
+          <hr /><h5>Persons which connect to this planet:</h5>
+          <ul>{residentConnection.residents.map((resident) => <li key={resident.id}><h5>{resident.name}</h5></li>)}</ul>
+        </div> : null}
+    </div>
+  )
+}
+
+
 const BottomPartOfPlanetOnListComponent = ({ id }) =>
 
   <Query query={PLANET_ALL_INFO} variables={{ planetID: id }}>
     {({ loading, error, data }) => {
       if (loading) return <h5>LOADING...</h5>;
       if (error) return <h5>NO INFORMATION</h5>;
-      const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = data.planet;
-      return (
-        <div>
-          <h5>Gravity: {somePlanetInfo(gravity)}</h5>
-          <h5>Rotation Period: {somePlanetInfo(rotationPeriod)}</h5>
-          <h5>Orbital Period: {somePlanetInfo(orbitalPeriod)}</h5>
-          <h5>Climates: {somePlanetInfo(climates.map((climate) => ` ${climate}`))}</h5>
-          <h5>Terrains: {somePlanetInfo(terrains.map((terrain) => ` ${terrain}`))}</h5>
-          {filmConnection.films.length > 0 ?
-            <div>
-              <hr /><h5>Films where you could see this planet:</h5>
-              <ul>{filmConnection.films.map((film) => <li key={film.id}><h5>{film.title}</h5></li>)}</ul>
-            </div> : null}
-          {residentConnection.residents.length > 0 ?
-            <div>
-              <hr /><h5>Persons which connect to this planet:</h5>
-              <ul>{residentConnection.residents.map((resident) => <li key={resident.id}><h5>{resident.name}</h5></li>)}</ul>
-            </div> : null}
-        </div>
-      )
+      return <PlanetDetailsViewComponent planetDetails={data.planet} />
     }
     }
   </Query>
@@ -78,9 +83,12 @@ class PlanetOnListComponent extends React.Component {
 
     return (
       <StyledPlanetOnList onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
-        <TopPartOfPlanetOnListComponent aboutPlanet={aboutPlanet} />
         {this.state.isPlanetFullInfoOpen ?
-          <BottomPartOfPlanetOnListComponent id={aboutPlanet.id} /> : null}
+          <React.Fragment>
+            <TopPartOfPlanetOnListComponent aboutPlanet={aboutPlanet} />
+            <BottomPartOfPlanetOnListComponent id={aboutPlanet.id} />
+          </React.Fragment>
+          : <TopPartOfPlanetOnListComponent aboutPlanet={aboutPlanet} />}
       </StyledPlanetOnList>
     );
   }
