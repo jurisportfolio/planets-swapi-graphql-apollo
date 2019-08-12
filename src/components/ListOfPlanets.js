@@ -28,12 +28,12 @@ class ListOfPlanetsComponent extends React.Component {
         const pageInfo = fetchMoreResult.allPlanets.pageInfo;
         return newEdges.length
           ? {
-              allPlanets: {
-                __typename: previousResult.allPlanets.__typename,
-                edges: [...newEdges],
-                pageInfo
-              }
+            allPlanets: {
+              __typename: previousResult.allPlanets.__typename,
+              edges: [...newEdges],
+              pageInfo
             }
+          }
           : previousResult;
       }
     });
@@ -62,7 +62,9 @@ class ListOfPlanetsComponent extends React.Component {
   render() {
     let { loading, error } = this.props.data;
     const { allPlanets } = this.props.data;
-    if (loading) return <h1>LOADING...</h1>;
+    console.log('allPlanets: ', allPlanets);
+    console.log('this.props.data: ', this.props.data);
+    if (loading) return <h1 className="loading">LOADING PLANETS...</h1>;
     if (error) return console.log("ERROR: ", this.props.data.error);
     const listOfPlanetsFormServer = allPlanets.edges;
     // const isPreviousPage = allPlanets.pageInfo.hasPreviousPage;
@@ -74,7 +76,7 @@ class ListOfPlanetsComponent extends React.Component {
             <PlanetOnListComponent
               key={node.id}
               aboutPlanet={node}
-              
+
             />
           ))}
         </StyledListOfPlanets>

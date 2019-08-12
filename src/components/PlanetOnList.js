@@ -3,39 +3,6 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { withApollo, Query } from 'react-apollo';
 
-const StyledPlanetOnList = styled.div`
-
-  justify-self: stretch;
-
-  @media (min-width: 461px) {
-    grid-column: span ${(props) => props.isPlanetFullInfoOpen ? 2 : 1};
-  }
-  grid-row: span ${(props) => props.isPlanetFullInfoOpen ? 2 : 1};
-
-  display: flex;
-  flex-direction: column;
-
-  border: solid 1px black;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px;
-  cursor: default;
-
-  h5 {
-    margin: 5px;
-    font-weight: normal;
-  };
-  h3 {
-    margin-top: 5px;
-    text-align: center;
-  }
-`;
-
-const somePlanetInfo = (info = " No information", unit = "") => {
-  return ` ${info} ${unit}`.trim()
-}
-
-
 const BottomPartOfPlanetOnListComponent = ({ id }) =>
 
   <Query query={PLANET_ALL_INFO} variables={{ planetID: id }}>
@@ -80,26 +47,55 @@ const TopPartOfPlanetOnListComponent = ({ aboutPlanet }) => {
     </React.Fragment>)
 }
 
+
+// BasicPlanetQuery
+// DetailedPlanetQuery
+
+// BasicPlanetView
+// DetailedPlanetView
+
+
+
+// DetailedPlanet(SpaceFetch, DetailedPlanetQuery, DetailedPlanetView)
+
+
+
+// withApollo(DetailedPlanetQuery)
+
+// class BasicPlanetView {basicinfo}
+
+// class DetailedPlanetView {basicinfo, detailedinfo}
+
+
+
 class PlanetOnListComponent extends React.Component {
   state = {
     isPlanetFullInfoOpen: false
-  }
-
-  handleOnClick = () => {
-    this.setState({ isPlanetFullInfoOpen: !this.state.isPlanetFullInfoOpen });
   }
 
   render() {
     const aboutPlanet = this.props.aboutPlanet;
 
     return (
-      <StyledPlanetOnList onClick={this.handleOnClick} >
+      <StyledPlanetOnList onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
         <TopPartOfPlanetOnListComponent aboutPlanet={aboutPlanet} />
         {this.state.isPlanetFullInfoOpen ?
           <BottomPartOfPlanetOnListComponent id={aboutPlanet.id} /> : null}
       </StyledPlanetOnList>
     );
   }
+
+  handleOnClick = () => {
+    this.setState((prevState) => {
+      return (
+        { isPlanetFullInfoOpen: !prevState.isPlanetFullInfoOpen })
+    });
+  }
+
+}
+
+const somePlanetInfo = (info = " No information", unit = "") => {
+  return ` ${info} ${unit}`.trim()
 }
 
 const PLANET_ALL_INFO = gql`
@@ -132,4 +128,31 @@ query Planet(
   }
 }
 `;
+
+const StyledPlanetOnList = styled.div`
+
+  justify-self: stretch;
+
+  @media (min-width: 461px) {
+    grid-column: span ${(props) => props.isPlanetFullInfoOpen ? 2 : 1};
+  }
+  display: flex;
+  flex-direction: column;
+
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  cursor: default;
+
+  h5 {
+    margin: 5px;
+    font-weight: normal;
+  };
+  h3 {
+    margin-top: 5px;
+    text-align: center;
+  }
+`;
+
 export default withApollo(PlanetOnListComponent);
