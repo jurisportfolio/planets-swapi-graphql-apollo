@@ -9,13 +9,13 @@ class PlanetOnListComponent extends React.Component {
   }
 
   render() {
-    const aboutPlanet = this.props.aboutPlanet;
+    const planetBasicInfo = this.props.planetBasicInfo;
 
     return (
       <StyledPlanetContainer onClick={this.handleOnClick} isPlanetFullInfoOpen={this.state.isPlanetFullInfoOpen}>
         {this.state.isPlanetFullInfoOpen ?
-          <PlanetFullComponent aboutPlanet={aboutPlanet} /> :
-          <PlanetBasicComponent aboutPlanet={aboutPlanet} />}
+          <PlanetFullComponent planetBasicInfo={planetBasicInfo} /> :
+          <PlanetBasicComponent planetBasicInfo={planetBasicInfo} />}
       </StyledPlanetContainer>
     );
   }

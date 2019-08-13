@@ -9,7 +9,7 @@ const PageViewComponent = ({ pageData, handleOnClickBack, handleOnClickNext }) =
     <React.Fragment>
       <StyledListOfPlanets>
         {pageData.map(({ node }) => (
-          <PlanetOnListComponent key={node.id} aboutPlanet={node} />
+          <PlanetOnListComponent key={node.id} planetBasicInfo={node} />
         ))}
       </StyledListOfPlanets>
       <ChangePageComponent

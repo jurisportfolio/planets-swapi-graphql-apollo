@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import { somePlanetInfo } from "../../utilities/utilities";
 
-const PlanetBasicComponent = ({ aboutPlanet }) => {
-  const { name, diameter, population, surfaceWater } = aboutPlanet;
+const PlanetBasicComponent = ({ planetBasicInfo }) => {
+  const { name, diameter, population, surfaceWater } = planetBasicInfo;
   return (
     <StyledPlanetOnList>
       <div>
