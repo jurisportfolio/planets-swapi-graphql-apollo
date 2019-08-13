@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ListOfPlanetsComponent from "./components/ListOfPlanets";
+import ListOfPlanetsComponent from "./components/ListOfPlanets/ListOfPlanets";
 import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
