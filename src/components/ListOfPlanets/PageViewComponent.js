@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PlanetOnListComponent from "../PlanetOnList";
+import PlanetOnListComponent from "../PlanetOnList/PlanetOnList";
 import ChangePageComponent from "./PageChangeButtons";
 
 const PageViewComponent = ({ pageData, handleOnClickBack, handleOnClickNext }) => {

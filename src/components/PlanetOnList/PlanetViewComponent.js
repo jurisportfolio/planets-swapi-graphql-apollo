@@ -71,7 +71,7 @@ const TopPartOfPlanetOnListComponent = ({ aboutPlanet }) => {
 
 // class DetailedPlanetView {basicinfo, detailedinfo}
 
-
+// const Planet
 
 class PlanetOnListComponent extends React.Component {
   state = {
