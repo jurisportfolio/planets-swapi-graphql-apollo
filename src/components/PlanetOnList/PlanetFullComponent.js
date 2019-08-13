@@ -1,6 +1,9 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Query } from 'react-apollo';
+import styled from "styled-components";
+import { Query, withApollo } from 'react-apollo';
+
+import { somePlanetInfo } from "../../utilities/utilities";
 
 const PlanetDetailsViewComponent = ({ planetDetails }) => {
   const { gravity, rotationPeriod, orbitalPeriod, climates, terrains, filmConnection, residentConnection } = planetDetails;
@@ -52,15 +55,28 @@ const TopPartOfPlanetOnListComponent = ({ aboutPlanet }) => {
 
 const PlanetFullComponent = (props) => {
   return (
-    <React.Fragment>
+    <StyledPlanetOnList>
       <TopPartOfPlanetOnListComponent aboutPlanet={props.aboutPlanet} />
       <BottomPartOfPlanetOnListComponent id={props.aboutPlanet.id} />
-    </React.Fragment>)
+    </StyledPlanetOnList>)
 }
 
-const somePlanetInfo = (info = " No information", unit = "") => {
-  return ` ${info} ${unit}`.trim()
-}
+const StyledPlanetOnList = styled.div`
+
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+
+  h5 {
+    margin: 5px;
+    font-weight: normal;
+  };
+  h3 {
+    margin-top: 5px;
+    text-align: center;
+  }
+`;
 
 const PLANET_ALL_INFO = gql`
 query Planet(
@@ -93,4 +109,4 @@ query Planet(
 }
 `;
 
-export default PlanetFullComponent;
+export default withApollo(PlanetFullComponent);
