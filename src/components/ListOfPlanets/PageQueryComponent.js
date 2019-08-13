@@ -1,14 +1,25 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 
 import PageViewComponent from "./PageViewComponent";
 
 class PageQueryComponent extends React.Component {
+
+  state = {
+    numberPlanetsOnPage: 10,
+    pageQueryVars: {
+      firstFromList: 10,
+      lastFromList: null,
+      cursorAfter: null,
+      cursorBefore: null
+    }
+  }
+
   render() {
-    const { queryVars } = this.props;
+    const { pageQueryVars, numberPlanetsOnPage } = this.state;
     return (
-      <Query query={PAGE_OF_PLANETS} variables={queryVars}>
+      <Query query={PAGE_OF_PLANETS} variables={pageQueryVars}>
 
         {({ loading, error, data, fetchMore }) => {
 
@@ -42,7 +53,6 @@ class PageQueryComponent extends React.Component {
               cursorAfter: null,
               cursorBefore: data.allPlanets.pageInfo.startCursor
             };
-            console.log('variables back: ', variables);
             handleFetchMore(variables);
 
           };
@@ -54,16 +64,12 @@ class PageQueryComponent extends React.Component {
               cursorAfter: data.allPlanets.pageInfo.endCursor,
               cursorBefore: null
             };
-            console.log('variables next: ', variables);
             handleFetchMore(variables);
           }
-
-
           return <PageViewComponent
             pageData={data.allPlanets.edges}
             handleOnClickBack={handleOnClickBack}
             handleOnClickNext={handleOnClickNext} />
-
         }
         }
       </Query>
@@ -104,4 +110,4 @@ const PAGE_OF_PLANETS = gql`
 }
 `;
 
-export default PageQueryComponent;
+export default withApollo(PageQueryComponent);

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ListOfPlanetsComponent from "./components/ListOfPlanets/ListOfPlanets";
+import PageQueryComponent from "./components/ListOfPlanets/PageQueryComponent";
 import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
@@ -26,7 +26,7 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <StyledApp>
-          <ListOfPlanetsComponent />
+          <PageQueryComponent />
         </StyledApp>
       </ApolloProvider>
     );
