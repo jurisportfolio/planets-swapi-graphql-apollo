@@ -68,6 +68,39 @@ class ListOfPlanetsComponent extends React.Component {
     }
   }
 
+  handleFetchMore = (queryVars) => {
+    console.log('queryVars: ', queryVars);
+    // this.setState(queryVars);
+  }
+
+  handleOnClickBack = () => {
+    const variables = {
+      firstFromList: null,
+      lastFromList: numberPlanetsOnPage,
+      cursorAfter: null,
+      cursorBefore: this.props.data.allPlanets.pageInfo.startCursor
+    };
+    console.log('variables back: ', variables);
+    this.handleFetchMore(variables);
+
+  }
+
+  handleOnClickNext = () => {
+    const variables = {
+      firstFromList: numberPlanetsOnPage,
+      lastFromList: null,
+      cursorAfter: this.props.data.allPlanets.pageInfo.endCursor,
+      cursorBefore: null
+    };
+    console.log('variables next: ', variables);
+    this.handleFetchMore(variables);
+  }
+
+  // getNew
+
+  // ListView (query => cursors)
+  // DeleteButton 
+
   render() {
     return (
       <React.Fragment>
