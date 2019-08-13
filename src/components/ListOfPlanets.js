@@ -3,62 +3,128 @@ import styled from "styled-components";
 import PlanetOnListComponent from "./PlanetOnList";
 import ChangePageComponent from "./PageChangeButtons";
 import gql from "graphql-tag";
-import { graphql, Query, withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 
 const numberPlanetsOnPage = 10;
 
-const StyledListOfPlanets = styled.div`
+const PageViewComponent = ({ pageData, handleOnClickBack, handleOnClickNext }) => {
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,  1fr));
-  ${'' /* grid-template-row: repeat(auto-fit, minmax(800px,  4fr)); */}
-  ${'' /* border: solid 1px black; */}
-  ${'' /* border-radius: 5px; */}
-  ${'' /* padding: 10px; */}
-  margin: 10px 5px 10px 5px;
-`;
-
-const PageViewComponent = ({ listOfPlanets }) => {
-  console.log('listOfPlanets: ', listOfPlanets);
-  const listOfPlanetsFromServer = listOfPlanets.allPlanets.edges;
-
-  // console.log('listOfPlanetsFormServer: ', listOfPlanetsFormServer);
   return (
-    // <React.Fragment>
-    <StyledListOfPlanets>
-      {listOfPlanetsFromServer.map(({ node }) => (
-        <PlanetOnListComponent
-          key={node.id}
-          aboutPlanet={node}
-
-        />
-      ))}
-    </StyledListOfPlanets>
-
-
-    // </React.Fragment>
-
-  )
-
+    <React.Fragment>
+      <StyledListOfPlanets>
+        {pageData.map(({ node }) => (
+          <PlanetOnListComponent key={node.id} aboutPlanet={node} />
+        ))}
+      </StyledListOfPlanets>
+      <ChangePageComponent
+        handleOnClickBack={handleOnClickBack}
+        handleOnClickNext={handleOnClickNext}
+        isEnabled={{ isBackEnabled: true, isNextEnabled: true }}
+      />
+    </React.Fragment>)
 }
 
-const PageQueryComponent = ({ queryVars }) =>
+class PageQueryComponent extends React.Component {
+  render() {
+    const { queryVars, handlePageChange } = this.props;
+    return (
+      <Query query={PAGE_OF_PLANETS} variables={queryVars}>
+
+        {({ loading, error, data }) => {
+
+          if (loading) return <h5>LOADING...</h5>;
+          if (error) return <h5>NO INFORMATION</h5>;
+          console.log('data: ', data);
+
+          const handleOnClickBack = () => {
+            const variables = {
+              firstFromList: null,
+              lastFromList: numberPlanetsOnPage,
+              cursorAfter: null,
+              cursorBefore: data.allPlanets.pageInfo.startCursor
+            };
+            console.log('variables back: ', variables);
+            handlePageChange(variables);
+
+          };
+
+          const handleOnClickNext = () => {
+            const variables = {
+              firstFromList: numberPlanetsOnPage,
+              lastFromList: null,
+              cursorAfter: data.allPlanets.pageInfo.endCursor,
+              cursorBefore: null
+            };
+            console.log('variables next: ', variables);
+            handlePageChange(variables);
+          }
 
 
-  <Query query={PAGE_OF_PLANETS} variables={queryVars}>
-    {({ loading, error, data }) => {
+          return <PageViewComponent
+            pageData={data.allPlanets.edges}
+            handleOnClickBack={handleOnClickBack}
+            handleOnClickNext={handleOnClickNext} />
 
-      if (loading) return <h5>LOADING...</h5>;
-      if (error) return <h5>NO INFORMATION</h5>;
-      return <PageViewComponent listOfPlanets={data} />
-
-    }
-    }
-  </Query>
-// return null;
-
+        }
+        }
+      </Query>
+    )
+  }
+}
 
 class ListOfPlanetsComponent extends React.Component {
+  state = {
+    pageQueryVars: {
+      firstFromList: numberPlanetsOnPage,
+      lastFromList: null,
+      cursorAfter: null,
+      cursorBefore: null
+    }
+  }
+
+  changePageQueryVarsState = (newVars) => {
+    this.setState({ pageQueryVars: newVars });
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <PageQueryComponent queryVars={this.state.pageQueryVars} handlePageChange={this.changePageQueryVarsState} />
+      </React.Fragment>
+
+    )
+  }
+}
+
+const StyledListOfPlanets = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,  1fr));
+    margin: 10px 5px 10px 5px;
+    `;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class _old2_ListOfPlanetsComponent extends React.Component {
   state = {
     queryVars: {
       firstFromList: 10,
@@ -99,7 +165,7 @@ class ListOfPlanetsComponent extends React.Component {
   // getNew
 
   // ListView (query => cursors)
-  // DeleteButton 
+  // DeleteButton
 
   render() {
     return (
@@ -194,36 +260,36 @@ class _oldListOfPlanetsComponent extends React.Component {
 }
 
 const PAGE_OF_PLANETS = gql`
-  query Planets(
-    $firstFromList: Int,
-    $lastFromList: Int,
-    $cursorAfter: String,
-    $cursorBefore: String,
+    query Planets(
+      $firstFromList: Int,
+      $lastFromList: Int,
+      $cursorAfter: String,
+      $cursorBefore: String,
   ) {
-    allPlanets(
-      first: $firstFromList,
+        allPlanets(
+          first: $firstFromList,
       last: $lastFromList,
       after: $cursorAfter,
       before: $cursorBefore,
     ) {
-      edges {
-        node {
-          id
+        edges {
+      node {
+        id
           name
-          diameter
-          population
-          surfaceWater
-        }
-        cursor
-      }
+      diameter
+      population
+      surfaceWater
+    }
+    cursor
+  }
       pageInfo {
         startCursor
         endCursor
-        hasNextPage
-        hasPreviousPage
-      }
+      hasNextPage
+      hasPreviousPage
     }
   }
+}
 `;
 
 export default withApollo(ListOfPlanetsComponent)
