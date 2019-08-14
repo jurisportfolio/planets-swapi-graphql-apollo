@@ -11,10 +11,10 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/planets-swapi-graphql-apollo/precache-manifest.32407b3f69cc7416f696a6952f6d64f1.js"
+  "/planets-swapi-graphql-apollo/precache-manifest.f7bc0961e708319287b2a3deca59e968.js"
 );
 
 self.addEventListener('message', (event) => {
